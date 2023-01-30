@@ -1,20 +1,14 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import { MemoryRouter } from 'react-router-dom';
-import App from './components/App';
-import * as serviceWorker from './serviceWorker';
-import './index.css';
+import React from "react";
+import { BrowserRouter } from "react-router-dom";
+import App from "./components/App";
+import "./index.css";
+import { createRoot } from "react-dom/client";
 
-ReactDOM.render(
+const root = createRoot(document.getElementById("root"));
+root.render(
   <React.StrictMode>
-    <MemoryRouter>
+    <BrowserRouter>
       <App />
-    </MemoryRouter>
-  </React.StrictMode>,
-  document.getElementById('root')
+    </BrowserRouter>
+  </React.StrictMode>
 );
-
-// If you want your app to work offline and load faster, you can change
-// unregister() to register() below. Note this comes with some pitfalls.
-// Learn more about service workers: https://bit.ly/CRA-PWA
-serviceWorker.unregister();
