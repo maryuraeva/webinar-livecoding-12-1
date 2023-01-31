@@ -96,7 +96,7 @@ class Register extends React.Component {
         </form>
         <div className="register__signin">
           <p>Уже зарегистрированы?</p>
-          <Link to="login" className="register__login-link">
+          <Link to="/login" className="register__login-link">
             Войти
           </Link>
         </div>

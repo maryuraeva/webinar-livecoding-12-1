@@ -18,12 +18,12 @@ function NavBar() {
       </div>
       <ul className="navbar__nav">
         <li>
-          <Link to="ducks" className="navbar__link">
+          <Link to="/ducks" className="navbar__link">
             Утки
           </Link>
         </li>
         <li>
-          <Link to="my-profile" className="navbar__link">
+          <Link to="/my-profile" className="navbar__link">
             Мой профиль
           </Link>
         </li>

@@ -1,14 +1,14 @@
-import React from 'react';
-import NavBar from './NavBar.js';
-import DuckList from './DuckList.js';
+import React from "react";
+import NavBar from "./NavBar.js";
+import DuckList from "./DuckList.js";
 
-function Ducks () {
+function Ducks() {
   return (
     <>
       <NavBar />
       <DuckList />
     </>
-  )
+  );
 }
 
 export default Ducks;
