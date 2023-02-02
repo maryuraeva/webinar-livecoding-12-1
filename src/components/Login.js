@@ -38,6 +38,8 @@ class Login extends React.Component {
           });
         }
         if (data.jwt) {
+          localStorage.setItem("jwt", data.jwt);
+          
           this.setState({ email: "", password: "", message: "" }, () => {
             this.props.handleLogin();
             this.props.router.navigate("/ducks");
