@@ -20,8 +20,24 @@ function App() {
     tokenCheck();
   }, []);
 
-  function handleLogin() {
-    setLoggedIn(true);
+  function handleLogin({ username, password }) {
+    return duckAuth.authorize(username, password).then((data) => {
+      if (data.jwt) {
+        localStorage.setItem("jwt", data.jwt);
+        setLoggedIn(true);
+        setUserData({
+          username: data.user.username,
+          email: data.user.email,
+        });
+        navigate("/ducks");
+      }
+    });
+  }
+
+  function handleRegister({ username, password, email }) {
+    return duckAuth.register(username, password, email).then(() => {
+      navigate("/login");
+    });
   }
 
   function tokenCheck() {
@@ -66,7 +82,7 @@ function App() {
         path="/register"
         element={
           <div className="registerContainer">
-            <Register />
+            <Register handleRegister={handleRegister} />
           </div>
         }
       />

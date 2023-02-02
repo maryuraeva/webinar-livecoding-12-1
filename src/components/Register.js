@@ -1,11 +1,9 @@
 import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import Logo from "./Logo.js";
-import * as duckAuth from "../duckAuth.js";
 import "./styles/Register.css";
 
-function Register() {
-  const navigate = useNavigate();
+function Register({ handleRegister }) {
   const [userData, setUserData] = useState({
     username: "",
     email: "",
@@ -27,13 +25,9 @@ function Register() {
     e.preventDefault();
 
     if (userData.password === userData.confirmPassword) {
-      let { username, password, email } = userData;
-
-      duckAuth
-        .register(username, password, email)
+      handleRegister(userData)
         .then(() => {
           setMessage("");
-          navigate("/login");
         })
         .catch((error) => {
           setMessage(`Что-то пошло не так! ${error} `);

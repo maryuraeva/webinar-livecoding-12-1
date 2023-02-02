@@ -1,11 +1,9 @@
 import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import Logo from "./Logo.js";
-import * as duckAuth from "../duckAuth.js";
 import "./styles/Login.css";
 
 function Login({ handleLogin }) {
-  const navigate = useNavigate();
   const [userData, setUserData] = useState({
     username: "",
     password: "",
@@ -28,16 +26,10 @@ function Login({ handleLogin }) {
       return;
     }
 
-    duckAuth
-      .authorize(userData.username, userData.password)
-      .then((data) => {
-        if (data.jwt) {
-          localStorage.setItem("jwt", data.jwt);
-          setUserData({ email: "", password: "" });
-          setMessage("");
-          handleLogin();
-          navigate("/ducks");
-        }
+    handleLogin(userData)
+      .then(() => {
+        setUserData({ email: "", password: "" });
+        setMessage("");
       })
       .catch((error) => {
         setMessage(`Что-то пошло не так! ${error} `);
