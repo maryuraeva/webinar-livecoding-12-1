@@ -1,5 +1,5 @@
-import React from "react";
-import { Route, Routes, Navigate } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { Route, Routes, Navigate, useNavigate } from "react-router-dom";
 import Login from "./Login.js";
 import Register from "./Register.js";
 import Ducks from "./Ducks.js";
@@ -7,99 +7,75 @@ import MyProfile from "./MyProfile.js";
 import ProtectedRoute from "./ProtectedRoute";
 import * as duckAuth from "../duckAuth.js";
 import "./styles/App.css";
-import withRouter from "../utils.js";
 
-class App extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      loggedIn: false,
-    };
-    this.tokenCheck = this.tokenCheck.bind(this);
-    this.handleLogin = this.handleLogin.bind(this);
+function App() {
+  const navigate = useNavigate();
+  const [loggedIn, setLoggedIn] = useState(false);
+  const [userData, setUserData] = useState({
+    username: "",
+    email: "",
+  });
+
+  useEffect(() => {
+    tokenCheck();
+  }, []);
+
+  function handleLogin() {
+    setLoggedIn(true);
   }
 
-  componentDidMount() {
-    this.tokenCheck();
-  }
-
-  handleLogin() {
-    this.setState({
-      loggedIn: true,
-    });
-  }
-
-  tokenCheck = () => {
-    if (localStorage.getItem("jwt")) {
-      let jwt = localStorage.getItem("jwt");
+  function tokenCheck() {
+    const jwt = localStorage.getItem("jwt");
+    if (jwt) {
       duckAuth.getContent(jwt).then((res) => {
-        if (res) {
-          let userData = {
-            username: res.username,
-            email: res.email,
-          };
-          this.setState(
-            {
-              loggedIn: true,
-              userData,
-            },
-            () => {
-              this.props.router.navigate("/ducks");
-            }
-          );
-        }
+        setLoggedIn(true);
+        setUserData({
+          username: res.username,
+          email: res.email,
+        });
+        navigate("/ducks");
       });
     }
-  };
-
-  render() {
-    return (
-      <Routes>
-        <Route
-          path="/ducks"
-          element={
-            <ProtectedRoute loggedIn={this.state.loggedIn} component={Ducks} />
-          }
-        />
-        <Route
-          path="/my-profile"
-          element={
-            <ProtectedRoute
-              loggedIn={this.state.loggedIn}
-              userData={this.state.userData}
-              component={MyProfile}
-            />
-          }
-        />
-        <Route
-          path="/login"
-          element={
-            <div className="loginContainer">
-              <Login handleLogin={this.handleLogin} />
-            </div>
-          }
-        />
-        <Route
-          path="/register"
-          element={
-            <div className="registerContainer">
-              <Register />
-            </div>
-          }
-        />
-        <Route
-          path="*"
-          element={
-            this.state.loggedIn ? (
-              <Navigate to="/ducks" />
-            ) : (
-              <Navigate to="/login" />
-            )
-          }
-        />
-      </Routes>
-    );
   }
+
+  return (
+    <Routes>
+      <Route
+        path="/ducks"
+        element={<ProtectedRoute loggedIn={loggedIn} component={Ducks} />}
+      />
+      <Route
+        path="/my-profile"
+        element={
+          <ProtectedRoute
+            loggedIn={loggedIn}
+            userData={userData}
+            component={MyProfile}
+          />
+        }
+      />
+      <Route
+        path="/login"
+        element={
+          <div className="loginContainer">
+            <Login handleLogin={handleLogin} />
+          </div>
+        }
+      />
+      <Route
+        path="/register"
+        element={
+          <div className="registerContainer">
+            <Register />
+          </div>
+        }
+      />
+      <Route
+        path="*"
+        element={loggedIn ? <Navigate to="/ducks" /> : <Navigate to="/login" />}
+      />
+    </Routes>
+  );
 }
 
-export default withRouter(App);
+export default App;
