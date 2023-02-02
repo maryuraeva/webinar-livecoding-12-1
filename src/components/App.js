@@ -75,10 +75,7 @@ class App extends React.Component {
           path="/login"
           element={
             <div className="loginContainer">
-              <Login
-                handleLogin={this.handleLogin}
-                tokenCheck={this.tokenCheck}
-              />
+              <Login handleLogin={this.handleLogin} />
             </div>
           }
         />

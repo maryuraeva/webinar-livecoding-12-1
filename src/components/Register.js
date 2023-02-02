@@ -3,7 +3,6 @@ import { Link, useNavigate } from "react-router-dom";
 import Logo from "./Logo.js";
 import * as duckAuth from "../duckAuth.js";
 import "./styles/Register.css";
-import withRouter from "../utils.js";
 
 function Register() {
   const navigate = useNavigate();
